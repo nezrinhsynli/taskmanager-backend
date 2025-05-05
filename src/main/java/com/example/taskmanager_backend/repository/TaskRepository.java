@@ -1,6 +1,6 @@
-package com.example.taskmanager_backend.starter.dao.repositories;
+package com.example.taskmanager_backend.repository;
 
-import com.example.taskmanager_backend.starter.dao.entities.Task;
+import com.example.taskmanager_backend.entities.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TaskRepository extends JpaRepository<Task,Long> {

@@ -1,11 +1,10 @@
-package com.example.taskmanager_backend.starter.dao.entities;
+package com.example.taskmanager_backend.entities;
 
-import com.example.taskmanager_backend.starter.enums.TaskStatus;
+import com.example.taskmanager_backend.enums.TaskStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity

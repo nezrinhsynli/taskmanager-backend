@@ -1,7 +1,7 @@
-package com.example.taskmanager_backend.starter.service;
+package com.example.taskmanager_backend.service;
 
-import com.example.taskmanager_backend.starter.dao.entities.User;
-import com.example.taskmanager_backend.starter.dao.repositories.UserRepository;
+import com.example.taskmanager_backend.entities.User;
+import com.example.taskmanager_backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

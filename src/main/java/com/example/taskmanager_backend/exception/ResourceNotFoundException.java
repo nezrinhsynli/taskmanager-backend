@@ -1,4 +1,4 @@
-package com.example.taskmanager_backend.starter.exception;
+package com.example.taskmanager_backend.exception;
 
 public class ResourceNotFoundException extends RuntimeException {
     public ResourceNotFoundException (String message){

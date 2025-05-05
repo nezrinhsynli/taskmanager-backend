@@ -1,12 +1,11 @@
-package com.example.taskmanager_backend.starter.service;
+package com.example.taskmanager_backend.service;
 
-import com.example.taskmanager_backend.starter.dao.entities.Task;
-import com.example.taskmanager_backend.starter.dao.repositories.TaskRepository;
-import com.example.taskmanager_backend.starter.dao.repositories.UserRepository;
-import com.example.taskmanager_backend.starter.enums.TaskStatus;
-import com.example.taskmanager_backend.starter.exception.ResourceNotFoundException;
+import com.example.taskmanager_backend.entities.Task;
+import com.example.taskmanager_backend.repository.TaskRepository;
+import com.example.taskmanager_backend.repository.UserRepository;
+import com.example.taskmanager_backend.enums.TaskStatus;
+import com.example.taskmanager_backend.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

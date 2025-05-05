@@ -1,6 +1,6 @@
-package com.example.taskmanager_backend.starter.dao.repositories;
+package com.example.taskmanager_backend.repository;
 
-import com.example.taskmanager_backend.starter.dao.entities.User;
+import com.example.taskmanager_backend.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
