@@ -31,7 +31,7 @@ public class TaskService {
         task.setDescription(updatedTask.getDescription());
         task.setDeadline(updatedTask.getDeadline());
         task.setStatus(updatedTask.getStatus());
-        task.setAssiginedUsers(updatedTask.getAssiginedUsers());
+//        task.setAssiginedUsers(updatedTask.getAssiginedUsers());
         return taskRepository.save(task);
     }
 

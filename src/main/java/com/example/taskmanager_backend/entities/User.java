@@ -6,23 +6,30 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Table(name = "users")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 @Builder
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "name")
     private String name;
 
-    @Column(unique = true, nullable = false)
+    @Column(name = "email", nullable = false)
     private String email;
 
-    private String phone;
-
+    @Column(name = "password")
     private String password;
+
+    @OneToMany
+    List<Task> tasks;
+
+
 }
