@@ -25,15 +25,15 @@ public class TaskService {
         return taskRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Task not found with id:"+id));
 
     }
-    public Task updateTask(Long id, Task updatedTask) {
-        Task task = getTaskById(id);
-        task.setTitle(updatedTask.getTitle());
-        task.setDescription(updatedTask.getDescription());
-        task.setDeadline(updatedTask.getDeadline());
-        task.setStatus(updatedTask.getStatus());
+//    public Task updateTask(Long id, Task updatedTask) {
+//        Task task = getTaskById(id);
+//        task.setTitle(updatedTask.getTitle());
+//        task.setDescription(updatedTask.getDescription());
+//        task.setDeadline(updatedTask.getDeadline());
+//        task.setStatus(updatedTask.getStatus());
 //        task.setAssiginedUsers(updatedTask.getAssiginedUsers());
-        return taskRepository.save(task);
-    }
+//        return taskRepository.save(task);
+//    }
 
     public void deleteTask(Long id) {
         taskRepository.deleteById(id);

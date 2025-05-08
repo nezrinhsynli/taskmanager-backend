@@ -23,10 +23,15 @@ public class Task {
     @Column(name = "description", length = 300)
     private String description;
 
-    @Column(name = "deadline")
-    private LocalDateTime deadline;
-
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
+
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name="organization_id")
+    private Organization organization;
 
 }
