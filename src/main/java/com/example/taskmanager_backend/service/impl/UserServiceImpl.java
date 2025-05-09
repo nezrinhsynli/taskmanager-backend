@@ -9,6 +9,7 @@ import com.example.taskmanager_backend.exception.EmailAlreadyExistException;
 import com.example.taskmanager_backend.exception.OrganizationNotFoundException;
 import com.example.taskmanager_backend.exception.WrongRoleNameException;
 import com.example.taskmanager_backend.repository.OrganizationRepository;
+import com.example.taskmanager_backend.exception.ResourceNotFoundException;
 import com.example.taskmanager_backend.repository.UserRepository;
 import com.example.taskmanager_backend.service.IUserService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +39,8 @@ public class UserServiceImpl implements IUserService {
         }
 
         Optional<Organization> optionalOrganization = organizationRepository.findById(userRequest.getOrganizationId());
-        if (optionalOrganization.isEmpty()){
+        
+        if (optionalOrganization.isEmpty()) {
             throw new OrganizationNotFoundException("The provided organization ID was not found.");
         }
 
@@ -50,6 +54,29 @@ public class UserServiceImpl implements IUserService {
 
         userRepository.save(user);
         return BaseResponse.getSuccessMessage();
+    }
+
+    @Override
+    public BaseResponse getUserById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+
+        BaseResponse response = new BaseResponse();
+        response.setMessage("User successfully fetched");
+        response.setTimestamp(LocalDateTime.now());
+        response.setSuccess(true);
+        response.setData(user);
+        return response;
+    }
+
+    @Override
+    public BaseResponse getAllUsers() {
+        List<User> users = userRepository.findAll();
+        BaseResponse response = new BaseResponse();
+        response.setMessage("Users successfully fetched");
+        response.setSuccess(true);
+        response.setData(users);
+        return response;
     }
 
 

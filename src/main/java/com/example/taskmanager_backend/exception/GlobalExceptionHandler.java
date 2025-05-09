@@ -45,5 +45,13 @@ public class GlobalExceptionHandler {
         list.add(message);
         return list;
     }
+    public ErrorResponse<String> handleResourceNotFoundException(ResourceNotFoundException ex) {
+        ErrorResponse<String> errorResponse = new ErrorResponse<>();
+        errorResponse.setTimestamp(LocalDateTime.now());
+        errorResponse.setStatus(HttpStatus.NOT_FOUND.value());
+        errorResponse.setErrorCode(HttpStatus.NOT_FOUND.value());
+        errorResponse.setMessage(ex.getMessage());
 
+        return errorResponse;
+    }
 }
