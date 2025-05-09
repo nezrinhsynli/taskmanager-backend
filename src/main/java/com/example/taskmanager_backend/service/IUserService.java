@@ -6,5 +6,7 @@ import com.example.taskmanager_backend.dto.response.BaseResponse;
 public interface IUserService {
 
     BaseResponse create(UserRequest userRequest);
+    BaseResponse getAllUsers();
+    BaseResponse getUserById(Long id);
 
 }
