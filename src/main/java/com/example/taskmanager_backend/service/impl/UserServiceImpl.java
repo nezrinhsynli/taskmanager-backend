@@ -4,6 +4,7 @@ import com.example.taskmanager_backend.dto.request.UserRequest;
 import com.example.taskmanager_backend.dto.response.BaseResponse;
 import com.example.taskmanager_backend.entities.Organization;
 import com.example.taskmanager_backend.entities.User;
+import com.example.taskmanager_backend.enums.ErrorMessageEnum;
 import com.example.taskmanager_backend.enums.Role;
 import com.example.taskmanager_backend.exception.EmailAlreadyExistException;
 import com.example.taskmanager_backend.exception.OrganizationNotFoundException;
@@ -13,7 +14,6 @@ import com.example.taskmanager_backend.exception.ResourceNotFoundException;
 import com.example.taskmanager_backend.repository.UserRepository;
 import com.example.taskmanager_backend.service.IUserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -24,59 +24,60 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserServiceImpl implements IUserService {
 
-    @Autowired
+
     private final UserRepository userRepository;
     private final OrganizationRepository organizationRepository;
 
     @Override
     public BaseResponse create(UserRequest userRequest) {
-
         if (userRequest.getAdminRole() != Role.ADMIN) {
-            throw new WrongRoleNameException("Only Admin can create Users.");
-        }
-        if (userRepository.existsByEmail(userRequest.getEmail())) {
-            throw new EmailAlreadyExistException("The include email already exist.");
+            throw new WrongRoleNameException(ErrorMessageEnum.WRONG_ROLE.getMessage());
         }
 
-        Optional<Organization> optionalOrganization = organizationRepository.findById(userRequest.getOrganizationId());
-        
-        if (optionalOrganization.isEmpty()) {
-            throw new OrganizationNotFoundException("The provided organization ID was not found.");
+        if (userRepository.existsByEmail(userRequest.getEmail())) {
+            throw new EmailAlreadyExistException(ErrorMessageEnum.EMAIL_ALREADY_EXISTS.getMessage());
         }
+
+        Organization organization = organizationRepository.findById(userRequest.getOrganizationId())
+                .orElseThrow(() -> new OrganizationNotFoundException(ErrorMessageEnum.ORGANIZATION_NOT_FOUND.getMessage()));
 
         User user = new User();
         user.setName(userRequest.getName());
         user.setSurname(userRequest.getSurname());
         user.setEmail(userRequest.getEmail());
         user.setPassword(userRequest.getPassword());
-        user.setOrganization(optionalOrganization.get());
+        user.setOrganization(organization);
         user.setUserRole(userRequest.getUserRole());
 
         userRepository.save(user);
+
         return BaseResponse.getSuccessMessage();
     }
 
     @Override
     public BaseResponse getUserById(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(ErrorMessageEnum.USER_NOT_FOUND.getMessage() + id));
 
-        BaseResponse response = new BaseResponse();
-        response.setMessage("User successfully fetched");
-        response.setTimestamp(LocalDateTime.now());
-        response.setSuccess(true);
-        response.setData(user);
-        return response;
+        return new BaseResponse(
+                "User successfully fetched",
+                LocalDateTime.now(),
+                true,
+                user
+        );
     }
 
     @Override
     public BaseResponse getAllUsers() {
         List<User> users = userRepository.findAll();
-        BaseResponse response = new BaseResponse();
-        response.setMessage("Users successfully fetched");
-        response.setSuccess(true);
-        response.setData(users);
-        return response;
+
+        return new BaseResponse(
+                "Users successfully fetched",
+                LocalDateTime.now(),
+                true,
+                users
+        );
     }
 
 

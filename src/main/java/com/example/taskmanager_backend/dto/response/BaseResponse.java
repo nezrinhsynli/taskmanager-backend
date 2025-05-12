@@ -24,5 +24,10 @@ public class BaseResponse {
         baseResponse.setSuccess(true);
         return baseResponse;
     }
+    public static BaseResponse getSuccessMessage(Object data) {
+        BaseResponse response = getSuccessMessage();
+        response.setData(data);
+        return response;
+    }
 
 }

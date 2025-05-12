@@ -22,36 +22,57 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     ErrorResponse<Map<String, List<String>>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         Map<String, List<String>> errorMap = new HashMap<>();
-
-        for (ObjectError objectError : ex.getAllErrors()) {
-            FieldError fieldError = (FieldError) objectError;
-            if (!errorMap.containsKey(fieldError.getField())) {
-                errorMap.put(fieldError.getField(), listOfErrors(new ArrayList<>(), objectError.getDefaultMessage()));
-            } else {
-                errorMap.put(fieldError.getField(), listOfErrors(errorMap.get(fieldError.getField()), objectError.getDefaultMessage()));
-            }
+        for (FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
+            errorMap.computeIfAbsent(fieldError.getField(), key -> new ArrayList<>()).add(fieldError.getDefaultMessage());
         }
 
-        ErrorResponse<Map<String, List<String>>> errorResponse = new ErrorResponse<>();
-        errorResponse.setTimestamp(LocalDateTime.now());
-        errorResponse.setStatus(HttpStatus.BAD_REQUEST.value());
-        errorResponse.setErrorCode(HttpStatus.BAD_REQUEST.value());
-        errorResponse.setMessage(errorMap);
-
-        return errorResponse;
+        return new ErrorResponse<>(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.value(),
+                errorMap
+        );
     }
 
-    private List<String> listOfErrors(List<String> list, String message) {
-        list.add(message);
-        return list;
+    // Email artıq varsa
+    @ExceptionHandler(EmailAlreadyExistException.class)
+    public ErrorResponse<String> handleEmailAlreadyExistException(EmailAlreadyExistException ex) {
+        return buildErrorResponse(ex.getMessage(), HttpStatus.CONFLICT);
     }
+
+    // Organization artıq varsa
+    @ExceptionHandler(OrganizationAlreadyExistException.class)
+    public ErrorResponse<String> handleOrganizationAlreadyExistException(OrganizationAlreadyExistException ex) {
+        return buildErrorResponse(ex.getMessage(), HttpStatus.CONFLICT);
+    }
+
+    // Organization tapılmayıbsa
+    @ExceptionHandler(OrganizationNotFoundException.class)
+    public ErrorResponse<String> handleOrganizationNotFoundException(OrganizationNotFoundException ex) {
+        return buildErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    // Yanlış rol daxil olunubsa
+    @ExceptionHandler(WrongRoleNameException.class)
+    public ErrorResponse<String> handleWrongRoleNameException(WrongRoleNameException ex) {
+        return buildErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    // Ümumi resurs tapılmayanda
+    @ExceptionHandler(ResourceNotFoundException.class)
     public ErrorResponse<String> handleResourceNotFoundException(ResourceNotFoundException ex) {
-        ErrorResponse<String> errorResponse = new ErrorResponse<>();
-        errorResponse.setTimestamp(LocalDateTime.now());
-        errorResponse.setStatus(HttpStatus.NOT_FOUND.value());
-        errorResponse.setErrorCode(HttpStatus.NOT_FOUND.value());
-        errorResponse.setMessage(ex.getMessage());
+        return buildErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
 
-        return errorResponse;
+    // Reusable metod: JSON formatında cavab qaytarır
+    private ErrorResponse<String> buildErrorResponse(String message, HttpStatus status) {
+        return new ErrorResponse<>(
+                LocalDateTime.now(),
+                status.value(),
+                status.value(),
+                message
+        );
+
+
     }
 }
