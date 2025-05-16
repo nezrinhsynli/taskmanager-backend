@@ -1,7 +1,6 @@
 package com.example.taskmanager_backend.dto.response;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -24,10 +23,12 @@ public class BaseResponse {
         baseResponse.setSuccess(true);
         return baseResponse;
     }
+
     public static BaseResponse getSuccessMessage(Object data) {
         BaseResponse response = getSuccessMessage();
         response.setData(data);
         return response;
     }
+
 
 }

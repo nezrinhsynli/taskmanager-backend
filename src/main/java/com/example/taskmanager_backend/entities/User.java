@@ -34,7 +34,7 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
-    private Role userRole;
+    private Role role;
 
     @ManyToOne
     @JoinColumn(name="organization_id")
