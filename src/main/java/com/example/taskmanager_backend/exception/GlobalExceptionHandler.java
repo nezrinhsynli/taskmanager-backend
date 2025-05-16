@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    ErrorResponse<Map<String, List<String>>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+    public ErrorResponse<Map<String, List<String>>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         Map<String, List<String>> errorMap = new HashMap<>();
         for (FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
             errorMap.computeIfAbsent(fieldError.getField(), key -> new ArrayList<>()).add(fieldError.getDefaultMessage());
@@ -32,6 +32,11 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST.value(),
                 errorMap
         );
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ErrorResponse<String> handleUserNotFoundException(UserNotFoundException ex) {
+        return buildErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     // Email artıq varsa
@@ -72,7 +77,8 @@ public class GlobalExceptionHandler {
                 status.value(),
                 message
         );
-
-
     }
+
+
+
 }

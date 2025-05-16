@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class OrganizationServiceImpl implements IOrganizationService {
 
-
     private final OrganizationRepository organizationRepository;
 
     @Override
@@ -26,7 +25,7 @@ public class OrganizationServiceImpl implements IOrganizationService {
         }
 
         if (organizationRepository.existsByOrganizationName(organizationRequest.getOrganizationName())) {
-            throw new OrganizationAlreadyExistException(ErrorMessageEnum. ORGANIZATION_ALREADY_EXISTS.getMessage());
+            throw new OrganizationAlreadyExistException(ErrorMessageEnum.ORGANIZATION_ALREADY_EXISTS.getMessage());
         }
 
         Organization organization = new Organization();

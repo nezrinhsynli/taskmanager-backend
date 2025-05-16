@@ -43,7 +43,5 @@ public class Organization {
     @OneToMany(mappedBy="organization")
     private List<User> users;
 
-    @OneToMany(mappedBy="organization")
-    private List<Task> tasks;
 
 }

@@ -6,7 +6,6 @@ import com.example.taskmanager_backend.dto.response.BaseResponse;
 import com.example.taskmanager_backend.service.IUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(path = "rest/api/user")
 public class UserControllerImpl implements IUserController {
 
-    @Autowired
     private final IUserService userService;
 
     @PostMapping(path = "/create")
@@ -22,7 +20,6 @@ public class UserControllerImpl implements IUserController {
     public BaseResponse create(@RequestBody @Valid UserRequest userRequest) {
         return userService.create(userRequest);
     }
-
 
     @GetMapping(path = "/getAll")
     @Override

@@ -15,15 +15,12 @@ import com.example.taskmanager_backend.repository.UserRepository;
 import com.example.taskmanager_backend.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements IUserService {
-
 
     private final UserRepository userRepository;
     private final OrganizationRepository organizationRepository;
@@ -47,10 +44,9 @@ public class UserServiceImpl implements IUserService {
         user.setEmail(userRequest.getEmail());
         user.setPassword(userRequest.getPassword());
         user.setOrganization(organization);
-        user.setUserRole(userRequest.getUserRole());
+        user.setRole(userRequest.getUserRole());
 
         userRepository.save(user);
-
         return BaseResponse.getSuccessMessage();
     }
 
