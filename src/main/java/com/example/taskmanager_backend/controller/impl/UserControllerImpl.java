@@ -32,7 +32,17 @@ public class UserControllerImpl implements IUserController {
     public BaseResponse getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
 
-    }
 
+
+    }
+    @PutMapping("/update/{id}")
+    @Override
+    public BaseResponse updateUser(@PathVariable Long id, @RequestBody @Valid UserRequest userRequest) {
+        return userService.updateUser(id, userRequest);
+    }
+        @DeleteMapping("/delete/{id}")
+        public BaseResponse deleteUser(@PathVariable Long id) {
+            return userService.deleteUser(id);
+        }
 
 }

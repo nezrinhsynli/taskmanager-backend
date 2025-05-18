@@ -32,7 +32,7 @@ public class OrganizationServiceImpl implements IOrganizationService {
         BeanUtils.copyProperties(organizationRequest, organization);
         organizationRepository.save(organization);
 
-        return BaseResponse.getSuccessMessage();
+        return BaseResponse.success("User succesfully created");
 
     }
 

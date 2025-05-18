@@ -33,7 +33,7 @@ public class TaskServiceImpl implements ITaskService {
     public BaseResponse create(TaskRequest taskRequest) {
         Task task = new Task();
 
-        if (taskRequest.getRole() == Role.ADMIN) {
+        if (taskRequest.getRole() == Role.Admin) {
             BeanUtils.copyProperties(taskRequest, task);
 
             Optional<User> optionalUser = userRepository.findById(taskRequest.getUserId());
@@ -42,10 +42,10 @@ public class TaskServiceImpl implements ITaskService {
             }
             task.setUser(optionalUser.get());
             taskRepository.save(task);
-            return BaseResponse.getSuccessMessage();
+            return BaseResponse.success("User succesfully created");
         }
 
-        if (taskRequest.getRole() == Role.USER && taskRequest.getCreatorId().equals(taskRequest.getUserId())) {
+        if (taskRequest.getRole() == Role.User&& taskRequest.getCreatorId().equals(taskRequest.getUserId())) {
             BeanUtils.copyProperties(taskRequest, task);
 
             Optional<User> optionalUser = userRepository.findById(taskRequest.getUserId());
@@ -54,7 +54,7 @@ public class TaskServiceImpl implements ITaskService {
             }
             task.setUser(optionalUser.get());
             taskRepository.save(task);
-            return BaseResponse.getSuccessMessage();
+            return BaseResponse.success("User successfully created");
         } else {
             throw new WrongRoleNameException("USER can only assign tasks to themselves!");
         }

@@ -4,18 +4,15 @@ import com.example.taskmanager_backend.enums.Role;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+@Getter
+@Setter
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserRequest {
 
-    @Enumerated(EnumType.STRING)
-    @NotNull(message = "The Role cannot be empty!")
-    private Role adminRole;
 
     @Pattern(regexp = "^[A-Za-zƏəÖöÜüĞğÇçŞşİı]+$", message = "Only letters can be used!")
     @Size(max = 20, message = "Name cannot be more than 20 characters!")
@@ -36,8 +33,10 @@ public class UserRequest {
     @NotNull(message = "Organization ID cannot be null")
     private Long organizationId;
 
-    @Enumerated(EnumType.STRING)
     @NotNull(message = "The Role cannot be empty!")
     private Role userRole;
+//    @Enumerated(EnumType.STRING)
+//    @NotNull(message = "The Role cannot be empty!")
+//    private Role adminRole;
 
 }

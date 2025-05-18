@@ -16,4 +16,13 @@ public class ErrorResponse<T> {
     private Integer errorCode;
     private T message;
 
+    public static <T> ErrorResponse<T> of(int status, T message) { //GlobalException ucun
+        return new ErrorResponse<>(
+                LocalDateTime.now(),
+                status,
+                status,
+                message
+        );
+
+    }
 }

@@ -1,34 +1,59 @@
 package com.example.taskmanager_backend.dto.response;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-
+@Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BaseResponse {
-
+public class BaseResponse<T> {
     private String message;
     private LocalDateTime timestamp;
     private boolean success;
-    private Object data;
+    private T data;
 
-    public static BaseResponse getSuccessMessage() {
-        BaseResponse baseResponse = new BaseResponse();
-        baseResponse.setMessage("Process success compiled");
-        baseResponse.setTimestamp(LocalDateTime.now());
-        baseResponse.setSuccess(true);
-        return baseResponse;
+    public static <T> BaseResponse<T> success(String message, T data) {
+        return new BaseResponse<>(
+                message,
+                LocalDateTime.now(),
+                true,
+                data
+        );
     }
 
-    public static BaseResponse getSuccessMessage(Object data) {
-        BaseResponse response = getSuccessMessage();
-        response.setData(data);
-        return response;
+    public static <T> BaseResponse<T> success(String message) {
+        return new BaseResponse<>(
+                message,
+                LocalDateTime.now(),
+                true,
+                null
+        );
     }
-
-
 }
+
+
+//    private String message;
+//    private LocalDateTime timestamp;
+//    private boolean success;
+//    private T data;
+//
+//    // Success cavab - datasız
+//    public static <T> BaseResponse<T> success(String message) {
+//        return new BaseResponse<>(message, LocalDateTime.now(), true, null);
+//    }
+//
+//    // Success cavab - datalı
+//    public static <T> BaseResponse<T> success(String message, T data) {
+//        return new BaseResponse<>(message, LocalDateTime.now(), true, data);
+//    }
+//
+//    // Fail cavab
+//    public static <T> BaseResponse<T> fail(String message) {
+//        return new BaseResponse<>(message, LocalDateTime.now(), false, null);
+//    }
+//
+//}

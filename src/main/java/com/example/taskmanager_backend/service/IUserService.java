@@ -9,6 +9,8 @@ public interface IUserService {
     BaseResponse create(UserRequest userRequest);
     BaseResponse getAllUsers();
     BaseResponse getUserById(Long id);
+    BaseResponse updateUser(Long id, UserRequest userRequest);
+    BaseResponse deleteUser(Long id);
 
 }
 
