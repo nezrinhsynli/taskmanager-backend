@@ -34,6 +34,18 @@ public class GlobalExceptionHandler {
         );
     }
 
+    @ExceptionHandler(TaskNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse<String> handleTaskNotFoundException(TaskNotFoundException ex) {
+        ErrorResponse<String> errorResponse = new ErrorResponse<>();
+        errorResponse.setTimestamp(LocalDateTime.now());
+        errorResponse.setStatus(HttpStatus.NOT_FOUND.value());
+        errorResponse.setErrorCode(HttpStatus.NOT_FOUND.value());
+        errorResponse.setMessage(ex.getMessage());
+        return errorResponse;
+    }
+
+
     @ExceptionHandler(UserNotFoundException.class)
     public ErrorResponse<String> handleUserNotFoundException(UserNotFoundException ex) {
         return buildErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
@@ -78,7 +90,6 @@ public class GlobalExceptionHandler {
                 message
         );
     }
-
 
 
 }

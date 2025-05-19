@@ -12,4 +12,10 @@ public interface ITaskController {
 
     List<TaskResponse> getAll();
 
+    TaskResponse getById(Long id);
+
+    String update(Long id, TaskRequest taskRequest);
+
+    String delete(Long id);
+
 }

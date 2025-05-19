@@ -42,10 +42,10 @@ public class TaskServiceImpl implements ITaskService {
             }
             task.setUser(optionalUser.get());
             taskRepository.save(task);
-            return BaseResponse.success("User succesfully created");
+            return BaseResponse.success("Task successfully created");
         }
 
-        if (taskRequest.getRole() == Role.User&& taskRequest.getCreatorId().equals(taskRequest.getUserId())) {
+        if (taskRequest.getRole() == Role.User && taskRequest.getCreatorId().equals(taskRequest.getUserId())) {
             BeanUtils.copyProperties(taskRequest, task);
 
             Optional<User> optionalUser = userRepository.findById(taskRequest.getUserId());
@@ -54,7 +54,7 @@ public class TaskServiceImpl implements ITaskService {
             }
             task.setUser(optionalUser.get());
             taskRepository.save(task);
-            return BaseResponse.success("User successfully created");
+            return BaseResponse.success("Task successfully created");
         } else {
             throw new WrongRoleNameException("USER can only assign tasks to themselves!");
         }
@@ -81,6 +81,63 @@ public class TaskServiceImpl implements ITaskService {
             taskResponseList.add(taskResponse);
         }
         return taskResponseList;
+    }
+
+    @Override
+    public TaskResponse getById(Long id) {
+        Optional<Task> optionalTask = taskRepository.findById(id);
+
+        if (optionalTask.isEmpty()) {
+            throw new TaskNotFoundException(ErrorMessageEnum.TASK_NOT_FOUND.getMessage());
+        }
+
+        Task task = optionalTask.get();
+        TaskResponse taskResponse = new TaskResponse();
+        BeanUtils.copyProperties(task, taskResponse);
+
+        if (task.getUser() == null) {
+            throw new NullPointerException(ErrorMessageEnum.USER_NOT_FOUND.getMessage());
+        }
+
+        User user = task.getUser();
+        UserResponse userResponse = new UserResponse();
+        BeanUtils.copyProperties(user, userResponse);
+
+        taskResponse.setUserResponse(userResponse);
+        return taskResponse;
+    }
+
+    @Override
+    public String update(Long id, TaskRequest taskRequest) {
+        Optional<Task> optionalTask = taskRepository.findById(id);
+
+        if (optionalTask.isEmpty()) {
+            throw new TaskNotFoundException(ErrorMessageEnum.TASK_NOT_FOUND.getMessage());
+        }
+
+        Task task = optionalTask.get();
+        BeanUtils.copyProperties(taskRequest, task);
+
+        Optional<User> optionalUser = userRepository.findById(taskRequest.getUserId());
+        if (optionalUser.isEmpty()) {
+            throw new UserNotFoundException(ErrorMessageEnum.USER_NOT_FOUND.getMessage());
+        }
+
+        task.setUser(optionalUser.get());
+        taskRepository.save(task);
+
+        return "Process success compiled";
+    }
+
+    @Override
+    public String delete(Long id) {
+        Optional<Task> optionalTask = taskRepository.findById(id);
+
+        if (optionalTask.isEmpty()) {
+            throw new TaskNotFoundException(ErrorMessageEnum.TASK_NOT_FOUND.getMessage());
+        }
+        taskRepository.delete(optionalTask.get());
+        return "Process success compiled";
     }
 
 

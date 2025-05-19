@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+
 @Builder
 @Data
 @NoArgsConstructor
@@ -15,6 +16,7 @@ public class BaseResponse<T> {
     private LocalDateTime timestamp;
     private boolean success;
     private T data;
+
 
     public static <T> BaseResponse<T> success(String message, T data) {
         return new BaseResponse<>(

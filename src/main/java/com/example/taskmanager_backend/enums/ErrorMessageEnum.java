@@ -9,7 +9,7 @@ public enum ErrorMessageEnum {
     ORGANIZATION_NOT_FOUND("The provided organization ID was not found."),
     USER_NOT_FOUND("User not found with given id: %s"),
     ORGANIZATION_ALREADY_EXISTS("Organization name already exists."),
-    TASK_NOT_FOUND("Task list is empty, not found");
+    TASK_NOT_FOUND("Task is empty, not found");
     private final String message;
 
     ErrorMessageEnum(String message) {
